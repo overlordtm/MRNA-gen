@@ -19,29 +19,40 @@
 ## Author: az <az@az-zeus>
 ## Created: 2012-05-11
 
-function [ ret ] = gen ()
+function [ dist best all ] = gen ()
 
-	popSize = 42;
+	popSize = 50;
 	pCross = 0.95;
-	pMutt = 0.01;
+	pMutt = 0.1;
 
 	mesta = load("mesta");
 
 	pop = population(mesta, popSize);
+
 	n = 0;
-	while(n < 250)
+
+	hist = [];
+
+	while(n < 1500)
 		# ocena vseh osebkov
 		grd = grade(mesta, pop);
 
+		hist= [hist grd(1,1)];
+
 		# izbira starsev
-		parents = selectParents(grd);
+		parents = selectParents(grd, 'tournament');
 
 		# krizanje
 		offspring = crossover(parents, pCross);
-
+		
 		# mutacija
 		for i=1:size(offspring,1)
-			offspring(i, :) = muttate(offspring(i, :), pMutt);
+			muttant =  muttate(offspring(i, :), pMutt, 'swap');
+			if isvalid(muttant) == 0
+				disp("mutacia proizvedla invalida")
+			else 
+				offspring(i, :) = muttate(offspring(i, :), pMutt, 'swap');
+			endif
 		end
 	
 		# izbor nove populacije
@@ -49,5 +60,9 @@ function [ ret ] = gen ()
 		n++;
 	end
 
-	ret = grade(mesta, pop);
+	clf
+	plot(hist);
+	all = grade(mesta, pop);
+	dist = all(1, 1);
+	best = all(1,:);
 endfunction

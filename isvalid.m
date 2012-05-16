@@ -2,7 +2,7 @@
 ## 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
-## the Free Software Foundation; either version 2 of the License, or
+## the Free Software Foundation; either version 3 of the License, or
 ## (at your option) any later version.
 ## 
 ## This program is distributed in the hope that it will be useful,
@@ -14,33 +14,11 @@
 ## along with Octave; see the file COPYING.  If not, see
 ## <http://www.gnu.org/licenses/>.
 
-## crossover2
+## isvalid
 
 ## Author: az <az@az-zeus>
-## Created: 2012-05-11
+## Created: 2012-05-16
 
-function [ C ] = crossover2 (A, B)
-
-	mask = zeros(size(A));
-
-	done = 0;
-	idx = 1;
-
-	while(done == 0);
-		mask(idx) = 1;	
-		
-		idx = find(B==A(idx), 1);
-
-		if(mask(idx) == 1);
-			done = 1;
-		end;
-	end;
-
-	maskInv = mod(mask + ones(size(mask)), 2);
-	
-	C = A.*mask + B.*maskInv;
-	#if isvalid(C) == 0
-	#	disp("crossover2 naredil invalida")
-	#endif
-
+function [ ret ] = isvalid (A)
+	ret = numel(A) == numel(unique(A));
 endfunction

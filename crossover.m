@@ -20,20 +20,13 @@
 ## Created: 2012-05-11
 
 function [ offspring ] = crossover (parents, pCross)
-	
-	nParents = size(parents, 1);	
-
-	offspring =[];
-
-	for i=2:2:nParents
+	nParents = size(parents, 1);
+	offspring = [];
+	for i=2:2:nParents;
 		A = parents(i-1,:);
 		B = parents(i, :);
-		if(rand(1) < pCross)
-			offspring = [offspring; crossover2(A, B); crossover2(B, A)];
-		else
-			offspring = [offspring; A; B];
-		end
-				
-	end
-
+		if(rand(1) < pCross);
+			offspring = [offspring; crossover2(A, B)];
+		endif;
+	end;
 endfunction

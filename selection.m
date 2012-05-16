@@ -22,11 +22,13 @@
 function [ newPop ] = selection (mesta, popSize, pop, offspring, method)
 
 	if nargin() < 5
-		method = "best"
+		method = "best";
 	end
 
-	if method == "best"
+	if strcmpi(method, 'best')
 		newPop = grade(mesta, [pop; offspring])(1:popSize,2:end);
-	end
+	elseif strcmpi(method, 'none')
+		newPop = pop;
+	endif
 
 endfunction
